@@ -1,4 +1,7 @@
+noticiaAtual = null
+noticias = []
 window.onload = () => {
+    sessionStorage.clear()
     var url = 'https://newsapi.org/v2/top-headlines?' +
         'country=br&' +
         'apiKey=3eaa50ca46284893ad65ef14d94e137d';
@@ -7,7 +10,8 @@ window.onload = () => {
         .then(function (response) {
             response.json().then(dados => {
                 console.log("dados ==> ", dados);
-
+                noticias = dados.articles
+                sessionStorage.setItem('noticias', JSON.stringify(dados.articles))
                 this.noticiasPrincipais(dados.articles)
             })
         })
@@ -39,6 +43,17 @@ function noticiasPrincipais(news) {
         title.classList.add('card-title')
         title.textContent = news[i].title
         body.appendChild(title)
+        var botao = document.createElement('a')
+        botao.classList.add('btn')
+        botao.classList.add('btn-primary')
+        // botao.classList.add('btn-lg')
+        botao.classList.add('btn-block')
+        botao.textContent = 'Ver Mais'
+        botao.setAttribute('id-noticia', i)
+        botao.addEventListener('click', this.abrirNoticia, false)
+        // botao.href = '/noticia.html'
+        body.appendChild(botao)
+        // noticia.getAttribute('teste')
 
         // if (!news[i].urlToImage) {
         //     var resumo = document.createElement('p')
@@ -46,7 +61,15 @@ function noticiasPrincipais(news) {
         //     resumo.classList.add('card-text')
         //     noticia.appendChild(resumo)
         // }
+
+
         noticia.appendChild(body)
         principal.appendChild(noticia)
     }
+}
+
+function abrirNoticia(noticia) {
+    sessionStorage.getItem('noticia-atual')
+    sessionStorage.setItem('noticia-atual', JSON.stringify(noticias[noticia.target.getAttribute('id-noticia')]))
+    window.location.href = '/noticia.html'
 }
