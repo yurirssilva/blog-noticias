@@ -71,5 +71,5 @@ function noticiasPrincipais(news) {
 function abrirNoticia(noticia) {
     sessionStorage.getItem('noticia-atual')
     sessionStorage.setItem('noticia-atual', JSON.stringify(noticias[noticia.target.getAttribute('id-noticia')]))
-    window.location.href = '/noticia.html'
+    window.location.href = 'noticia.html'
 }
